@@ -1,0 +1,7 @@
+{
+  "framework": null,
+  "installCommand": "npm install --omit=dev",
+  "buildCommand": "",
+  "outputDirectory": "web",
+  "functions": { "api/*.js": { "maxDuration": 30 } }
+}
