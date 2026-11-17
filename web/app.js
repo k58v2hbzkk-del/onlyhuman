@@ -135,7 +135,8 @@
 
   function renderConnect() {
     const b = $("#connectBtn");
-    b.textContent = S.account ? short(S.account) : "Connect";
+    b.innerHTML = S.account ? short(S.account) : `Connect<span class="arr">↗</span>`;
+    b.className = S.account ? "btn small ghost" : "btn small accent";
   }
   $("#connectBtn").onclick = () => connect().catch((e) => toast(errMsg(e), true));
 
@@ -156,7 +157,8 @@
 
   // ------------------------------------------------------------ router
   const routes = [
-    [/^#\/?$/, home],
+    [/^#\/?$/, () => home()],
+    [/^#\/how$/, () => home("how")],
     [/^#\/create$/, create],
     [/^#\/d\/(\d+)\/(\d+)(?:\?.*)?$/, dropPage],
     [/^#\/deploy$/, deploy],
@@ -165,8 +167,14 @@
     const h = location.hash || "#/";
     for (const [re, fn] of routes) {
       const m = h.match(re);
-      if (m) { window.scrollTo(0, 0); return fn(...m.slice(1)); }
+      if (m) {
+        app.dataset.view = fn === dropPage ? "drop" : (fn === create || fn === deploy) ? "page" : "home";
+        if (app.dataset.view !== "home" && globe) { globe.stop(); globe = null; }
+        window.scrollTo(0, 0);
+        return fn(...m.slice(1));
+      }
     }
+    app.dataset.view = "home";
     home();
   }
   window.addEventListener("hashchange", route);
@@ -177,29 +185,66 @@
   }
 
   // ------------------------------------------------------------ pages
-  async function home() {
+  let globe = null;
+  const words = (text, base = 0, step = 0.09) =>
+    text.split(" ").map((w, i) => `<span class="w chrome" style="animation-delay:${(base + i * step).toFixed(2)}s">${w}</span>`).join(" ");
+
+  async function home(scrollTo) {
     app.innerHTML = `
-      <h1>Giveaways that only pay <em>real</em> <span class="marker">people.</span></h1>
-      <p class="lead">Bots and farmers eat most giveaways. OnlyHuman checks every claimer first: one claim per real person, paid out instantly in dollars on QIE.</p>
-      <div class="row">
-        <a class="btn accent" href="#/create">Start a giveaway</a>
-        <a class="btn ghost" href="#how">How it works</a>
-      </div>
-      <div class="stats" id="stats">
-        <div class="stat"><b id="sDrops">–</b><span>giveaways</span></div>
-        <div class="stat"><b>1%</b><span>flat fee</span></div>
-        <div class="stat"><b>$0</b><span>gas for winners</span></div>
-      </div>
-      <div class="steps" id="how">
-        <div class="step"><div><b>Lock the prize</b><span>Put QUSDC or QIE in. It sits in the contract, not with us.</span></div></div>
-        <div class="step"><div><b>Pick who can claim</b><span>Anyone real, QIE ID holders, or KYC-verified humans only.</span></div></div>
-        <div class="step"><div><b>Share one link</b><span>Post it on X, Telegram, Discord, anywhere. Winners claim free, with no gas.</span></div></div>
-        <div class="step"><div><b>Bots get nothing</b><span>One claim per wallet and one per person. Leftovers come back to you.</span></div></div>
-      </div>
-      <div class="card dark">
-        <b>Why creators switch</b>
-        <p class="muted" style="margin:.4em 0 0">Your prize reaches your real audience instead of farm wallets. Every claimer leaves with a working QIE wallet.</p>
-      </div>`;
+      <section class="hero">
+        <canvas id="globe" aria-hidden="true"></canvas>
+        <div class="wrap">
+          <div class="chip fade-up" style="animation-delay:.1s"><i></i>Live on QIE · bots not invited</div>
+          <h1 class="reveal chrome-wrap">
+            ${words("Giveaways that only pay", 0.15)}
+            <span class="w" style="animation-delay:.6s"><em class="goldtext">real</em></span>
+            ${words("humans.", 0.7)}
+          </h1>
+          <p class="lead fade-up" style="animation-delay:.9s">Bots and farmers eat most giveaways. OnlyHuman checks every claimer first. One claim per real person, paid instantly in dollars, and winners never pay gas.</p>
+          <div class="hero-foot fade-up" style="animation-delay:1.05s">
+            <div class="row">
+              <a class="btn accent" href="#/create">Start a giveaway<span class="arr">↗</span></a>
+              <a class="btn ghost" href="#/how">▷&nbsp; How it works</a>
+            </div>
+            <div class="on-qie">Runs on <span class="p">QIE</span><span class="p">QUSDC</span><span class="p">QIE ID</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section"><div class="wrap">
+        <div class="stats">
+          <div class="stat"><b id="sDrops">–</b><span>giveaways created</span></div>
+          <div class="stat"><b>1%</b><span>flat fee, capped at 3%</span></div>
+          <div class="stat"><b class="goldtext">$0</b><span>gas for winners</span></div>
+        </div>
+      </div></section>
+
+      <section class="section" id="how"><div class="wrap">
+        <div class="eyebrow">How it works</div>
+        <h2 class="chrome">Four steps. <em>Zero</em> bots.</h2>
+        <div class="grid g4" style="margin-top:22px">
+          <div class="card"><div class="num">01</div><h3>Lock the prize</h3><p>Put QUSDC or QIE in. It sits in the contract, not with us.</p></div>
+          <div class="card"><div class="num">02</div><h3>Pick who can claim</h3><p>Anyone real, QIE ID holders, or KYC-verified humans only.</p></div>
+          <div class="card"><div class="num">03</div><h3>Share one link</h3><p>X, Telegram, Discord, anywhere. Winners claim free, with no gas.</p></div>
+          <div class="card"><div class="num">04</div><h3>Bots get nothing</h3><p>One claim per wallet and per person. Leftovers come back to you.</p></div>
+        </div>
+      </div></section>
+
+      <section class="section"><div class="wrap">
+        <div class="grid g2">
+          <div class="card glow"><div class="eyebrow">For creators & brands</div><h3 style="margin-top:0;font-size:22px">Your prize reaches your <em>real</em> audience</h3><p>Not farm wallets. Every claimer is checked, and every claim is public on QIE, so your community can see it was fair.</p></div>
+          <div class="card"><div class="eyebrow">For claimers</div><h3 style="margin-top:0;font-size:22px">Tap, check, <em>paid</em></h3><p>Connect your wallet and tap claim. No gas, no forms. Verified humans can earn a bigger share.</p></div>
+        </div>
+      </div></section>
+
+      <section class="cta-band">
+        <h2 class="chrome">Reward people,<br/><em>not</em> bots.</h2>
+        <p class="lead" style="margin:0 auto 26px">Start a giveaway in under a minute.</p>
+        <a class="btn accent" href="#/create">Start a giveaway<span class="arr">↗</span></a>
+      </section>`;
+    if (globe) globe.stop();
+    globe = window.OHGlobe ? window.OHGlobe(document.getElementById("globe")) : null;
+    if (scrollTo) setTimeout(() => document.getElementById(scrollTo)?.scrollIntoView({ behavior: "smooth" }), 60);
     if (ohAddress()) {
       try { $("#sDrops").textContent = String(await oh().dropCount()); } catch (_) {}
     }
@@ -209,7 +254,7 @@
     const hasUsd = !!usdAddress();
     const st = { token: hasUsd ? "usd" : "qie", gate: 0, hours: 24, bonus: true };
     app.innerHTML = `
-      <h2>Start a <em>giveaway</em></h2>
+      <h2 class="chrome">Start a <em>giveaway</em></h2>
       <p class="muted">Prize is locked in the contract until people claim it. Unclaimed money comes back to you.</p>
       ${needsContract()}
       <label>Prize in</label>
@@ -236,7 +281,7 @@
         <button data-v="1">1 hour</button><button data-v="24">1 day</button><button data-v="72">3 days</button><button data-v="168">7 days</button>
       </div>
       <div class="card"><div class="summary" id="sum"></div></div>
-      <button class="btn accent block" id="go" ${ohAddress() ? "" : "disabled"}>Lock prize & create link</button>
+      <button class="btn accent block" id="go" ${ohAddress() ? "" : "disabled"}>Lock prize & create link<span class="arr">↗</span></button>
       <p class="hint" style="text-align:center">Network: ${esc(CHAINS[S.chainId].name)}</p>`;
 
     const seg = (id, key, cast) => {
@@ -500,7 +545,7 @@
   function deploy() {
     let target = S.chainId;
     app.innerHTML = `
-      <h2>Deploy <em>OnlyHuman</em></h2>
+      <h2 class="chrome">Deploy <em>OnlyHuman</em></h2>
       <p class="muted">One-time setup from your phone. Open this page in your QIE Wallet browser.</p>
       <label>Network</label>
       <div class="seg two" id="netSeg">

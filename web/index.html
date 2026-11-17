@@ -7,22 +7,24 @@
   <meta name="description" content="Run giveaways and airdrops that bots can't farm. One claim per real person, paid instantly in QUSDC on QIE." />
   <meta property="og:title" content="OnlyHuman — giveaways that only pay real people" />
   <meta property="og:description" content="Bots can't farm it. One claim per real person, paid instantly on QIE." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#050506" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
   <header class="top">
-    <a href="#/" class="logo"><span class="dot"></span>OnlyHuman</a>
-    <button id="connectBtn" class="btn small ghost">Connect</button>
+    <a href="#/" class="logo" aria-label="OnlyHuman home"><img src="/logo.svg" alt="" width="26" height="26" /><span>Only<em>Human</em></span></a>
+    <nav class="navpill"><a href="#/">Home</a><a href="#/#how">How it works</a><a href="#/create">Start a giveaway</a></nav>
+    <button id="connectBtn" class="btn small accent">Connect<span class="arr">↗</span></button>
   </header>
 
   <main id="app"></main>
 
   <footer class="foot">
-    <span>Built on <b>QIE</b> · by <a href="https://x.com/Tajudeen" target="_blank" rel="noopener">@Tajudeen</a></span>
+    <span><img src="/logo.svg" alt="" width="14" height="14" style="vertical-align:-2px;margin-right:6px"/>Only<em>Human</em> · built on <b>QIE</b> by <a href="https://x.com/Tajudeen" target="_blank" rel="noopener">@Tajudeen</a></span>
     <span id="netLabel"></span>
   </footer>
 
@@ -30,6 +32,7 @@
 
   <script src="/vendor/ethers.umd.min.js"></script>
   <script src="/contracts.js"></script>
+  <script src="/globe.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

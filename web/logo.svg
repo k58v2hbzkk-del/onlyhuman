@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- OnlyHuman mark: fingerprint rings around one gold dot (the one real human) -->
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9a9aa3"/>
+    </linearGradient>
+    <radialGradient id="g" cx="32" cy="32" r="7" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe39a"/><stop offset="1" stop-color="#f2c14e"/>
+    </radialGradient>
+  </defs>
+  <path d="M51.5 18.5A24 24 0 1 0 56 32" stroke="url(#c)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M44.5 25A14.5 14.5 0 1 0 46.5 32" stroke="url(#c)" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <circle cx="32" cy="32" r="6" fill="url(#g)"/>
+</svg>
