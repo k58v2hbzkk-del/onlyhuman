@@ -1,0 +1,17 @@
+[build]
+  publish = "web"
+  functions = "netlify/functions"
+  command = "echo 'no build step'"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--omit=dev"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["api/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

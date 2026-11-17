@@ -36,11 +36,13 @@ npm install
 npx hardhat test
 ```
 
-## Deploy (phone-friendly)
-1. Import this repo into **Vercel** (free).
-2. Open `/#/deploy`, generate `CHECKER_KEY` and `RELAYER_KEY`, and add them as Vercel environment variables. Redeploy.
-3. In QIE Wallet's browser, open `/#/deploy` and tap **Deploy contract**. Add the address it shows as `ONLYHUMAN_1990` (mainnet) or `ONLYHUMAN_1983` (testnet). Redeploy.
+## Deploy (phone-friendly, Netlify)
+1. On **app.netlify.com**, sign in with GitHub → **Add new site → Import an existing project** → pick this repo → **Deploy**. `netlify.toml` handles the setup.
+2. Open `/#/deploy` on your new site, generate `CHECKER_KEY` and `RELAYER_KEY`, add them under **Site configuration → Environment variables**, then **Deploys → Trigger deploy**.
+3. In QIE Wallet's browser, open `/#/deploy` and tap **Deploy contract**. Add the address it shows as `ONLYHUMAN_1983` (testnet) or `ONLYHUMAN_1990` (mainnet), then redeploy.
 4. Send the relayer address a little QIE for claim gas.
+
+(Vercel works too: `vercel.json` is included.)
 
 | Variable | What it is |
 |---|---|
