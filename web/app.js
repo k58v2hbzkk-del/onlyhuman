@@ -7,7 +7,7 @@
   // ------------------------------------------------------------ networks
   const CHAINS = {
     1990: { name: "QIE Mainnet", short: "Mainnet", rpc: "https://rpc5mainnet.qie.digital", explorer: "https://mainnet.qie.digital" },
-    1983: { name: "QIE Testnet", short: "Testnet", rpc: "https://rpc1testnet.qie.digital/", explorer: "https://testnet.qie.digital" },
+    1983: { name: "QIE Testnet", short: "Testnet", rpc: "https://rpc2testnet.qie.digital", explorer: "https://testnet.qie.digital" },
     31337: { name: "Local test chain", short: "Local", rpc: "http://127.0.0.1:8545", explorer: "" },
   };
   const KNOWN_USD = { 1990: "0x3F43DA82eC9A4f5285F10FaF1F26EcA7319E5DA5" }; // official QUSDC (6 decimals)
