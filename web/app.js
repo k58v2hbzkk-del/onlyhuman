@@ -559,12 +559,12 @@
           <div><span>Already deployed here</span><b id="already">–</b></div>
         </div>
       </div>
-      ${S.cfg.checker ? "" : `<div class="note">Set <code>CHECKER_KEY</code> in Vercel first, then reload.</div>`}
+      ${S.cfg.checker ? "" : `<div class="note">Set <code>CHECKER_KEY</code> in Netlify first, then reload.</div>`}
       <button class="btn accent block" id="dep" ${S.cfg.checker ? "" : "disabled"}>Deploy contract</button>
       <div id="depOut"></div>
       <div id="usdBox"></div>
       <div class="card"><b>Service keys</b>
-        <p class="muted small">Vercel needs two keys: <code>CHECKER_KEY</code> (signs claim passes) and <code>RELAYER_KEY</code> (pays gas so winners claim free). Generate each one here. It's created on this phone and never sent anywhere. Paste it straight into Vercel and don't share it.</p>
+        <p class="muted small">Netlify needs two keys: <code>CHECKER_KEY</code> (signs claim passes) and <code>RELAYER_KEY</code> (pays gas so winners claim free). Generate each one here. It's created on this phone and never sent anywhere. Paste it straight into Netlify and don't share it.</p>
         <button class="btn ghost block" id="genBtn">Generate a key</button><div id="genOut"></div></div>`;
     const syncNet = () => {
       $("#netSeg").querySelectorAll("button").forEach((b) => b.classList.toggle("on", Number(b.dataset.v) === target));
@@ -583,7 +583,7 @@
       $("#genOut").innerHTML = `<p class="small">Address: <code>${w.address}</code></p>
         <p class="small">Private key (tap to copy):</p><p><code id="pk" style="cursor:pointer">${w.privateKey}</code></p>
         <p class="hint">For RELAYER_KEY, send this address a little QIE so it can pay claim gas.</p>`;
-      $("#pk").onclick = () => { navigator.clipboard?.writeText(w.privateKey); toast("Key copied — paste it into Vercel"); };
+      $("#pk").onclick = () => { navigator.clipboard?.writeText(w.privateKey); toast("Key copied — paste it into Netlify"); };
     };
 
     $("#dep").onclick = async () => {
@@ -599,7 +599,7 @@
         await c.waitForDeployment();
         const a = await c.getAddress();
         $("#depOut").innerHTML = `<div class="card dark"><b>Deployed ✓</b>
-          <p class="muted small">Add this in Vercel → Settings → Environment Variables, then redeploy:</p>
+          <p class="muted small">Add this in Netlify → Environment variables, then trigger a deploy:</p>
           <p><code style="background:#222;color:#fff">ONLYHUMAN_${target}=${a}</code></p>
           <button class="btn small accent" id="cpA">Copy address</button></div>`;
         $("#cpA").onclick = () => { navigator.clipboard?.writeText(a); toast("Copied"); };
@@ -623,7 +623,7 @@
         const a = await t.getAddress();
         b.innerHTML = `<span class="spin"></span> Minting 10,000…`;
         await (await t.mint(S.account, ethers.parseUnits("10000", 6))).wait();
-        $("#usdOut").innerHTML = `<p class="small">Done. Add in Vercel: <code>QUSDC_${target}=${a}</code></p>`;
+        $("#usdOut").innerHTML = `<p class="small">Done. Add in Netlify: <code>QUSDC_${target}=${a}</code></p>`;
         b.textContent = "Done";
       } catch (e) {
         toast(errMsg(e), true);
