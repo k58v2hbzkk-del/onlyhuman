@@ -24,6 +24,6 @@ module.exports = {
   },
   networks: {
     qieTestnet: { url: "https://rpc2testnet.qie.digital", chainId: 1983, accounts: PK },
-    qieMainnet: { url: "https://rpc1mainnet.qie.digital/", chainId: 1990, accounts: PK },
+    qieMainnet: { url: "https://rpc1mainnet.qie.digital", chainId: 1990, accounts: PK },
   },
 };

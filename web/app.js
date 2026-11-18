@@ -6,7 +6,7 @@
 
   // ------------------------------------------------------------ networks
   const CHAINS = {
-    1990: { name: "QIE Mainnet", short: "Mainnet", rpc: "https://rpc5mainnet.qie.digital", explorer: "https://mainnet.qie.digital" },
+    1990: { name: "QIE Mainnet", short: "Mainnet", rpc: "https://rpc1mainnet.qie.digital", explorer: "https://mainnet.qie.digital" },
     1983: { name: "QIE Testnet", short: "Testnet", rpc: "https://rpc2testnet.qie.digital", explorer: "https://testnet.qie.digital" },
     31337: { name: "Local test chain", short: "Local", rpc: "http://127.0.0.1:8545", explorer: "" },
   };

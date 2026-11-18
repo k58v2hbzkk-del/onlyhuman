@@ -2,7 +2,7 @@
 const { ethers } = require("ethers");
 
 const CHAINS = {
-  1990: { name: "QIE Mainnet", rpc: process.env.RPC_MAINNET || "https://rpc5mainnet.qie.digital", explorer: "https://mainnet.qie.digital" },
+  1990: { name: "QIE Mainnet", rpc: process.env.RPC_MAINNET || "https://rpc1mainnet.qie.digital", explorer: "https://mainnet.qie.digital" },
   1983: { name: "QIE Testnet", rpc: process.env.RPC_TESTNET || "https://rpc2testnet.qie.digital", explorer: "https://testnet.qie.digital" },
   31337: { name: "Local", rpc: process.env.RPC_LOCAL || "http://127.0.0.1:8545", explorer: "" },
 };
